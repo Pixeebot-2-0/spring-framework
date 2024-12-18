@@ -16,6 +16,7 @@
 
 package org.springframework.web.client;
 
+import static io.github.pixee.security.ObjectInputFilters.createSafeObjectInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,7 +50,7 @@ class HttpStatusCodeExceptionTests {
 		new ObjectOutputStream(out).writeObject(ex1);
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		HttpStatusCodeException ex2 =
-				(HttpStatusCodeException) new ObjectInputStream(in).readObject();
+				(HttpStatusCodeException) createSafeObjectInputStream(in).readObject();
 		assertThat(ex2.getResponseBodyAsString()).isEqualTo(ex1.getResponseBodyAsString());
 	}
 

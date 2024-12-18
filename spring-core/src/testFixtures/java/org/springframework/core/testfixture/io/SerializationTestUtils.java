@@ -16,6 +16,7 @@
 
 package org.springframework.core.testfixture.io;
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -62,6 +63,7 @@ public class SerializationTestUtils {
 
 		ByteArrayInputStream is = new ByteArrayInputStream(bytes);
 		try (ObjectInputStream ois = new ObjectInputStream(is)) {
+			ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
 			return (T) ois.readObject();
 		}
 	}
@@ -76,6 +78,7 @@ public class SerializationTestUtils {
 
 		ByteArrayInputStream is = new ByteArrayInputStream(bytes);
 		try (ObjectInputStream ois = new ObjectInputStream(is)) {
+			ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
 			return expectedType.cast(ois.readObject());
 		}
 	}
