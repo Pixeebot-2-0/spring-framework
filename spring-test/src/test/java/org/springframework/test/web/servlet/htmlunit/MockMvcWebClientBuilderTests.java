@@ -16,6 +16,8 @@
 
 package org.springframework.test.web.servlet.htmlunit;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 
@@ -114,17 +116,17 @@ class MockMvcWebClientBuilderTests {
 	}
 
 	private WebResponse getResponse(WebClient client, String url) throws IOException {
-		return createResponse(client, new WebRequest(new URL(url)));
+		return createResponse(client, new WebRequest(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)));
 	}
 
 	private WebResponse postResponse(WebClient client, String url, String body) throws IOException {
-		WebRequest request = new WebRequest(new URL(url), HttpMethod.POST);
+		WebRequest request = new WebRequest(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), HttpMethod.POST);
 		request.setRequestBody(body);
 		return createResponse(client, request);
 	}
 
 	private WebResponse deleteResponse(WebClient client, String url) throws IOException {
-		return createResponse(client, new WebRequest(new URL(url), HttpMethod.DELETE));
+		return createResponse(client, new WebRequest(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), HttpMethod.DELETE));
 	}
 
 	private WebResponse createResponse(WebClient client, WebRequest request) throws IOException {

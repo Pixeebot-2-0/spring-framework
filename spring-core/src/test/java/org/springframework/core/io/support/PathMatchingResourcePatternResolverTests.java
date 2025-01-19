@@ -16,6 +16,8 @@
 
 package org.springframework.core.io.support;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -128,7 +130,7 @@ class PathMatchingResourcePatternResolverTests {
 		@Test
 		void encodedHashtagInPath() throws IOException {
 			Path rootDir = Paths.get("src/test/resources/custom%23root").toAbsolutePath();
-			URL root = new URL("file:" + rootDir + "/");
+			URL root = Urls.create("file:" + rootDir + "/", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 			resolver = new PathMatchingResourcePatternResolver(new DefaultResourceLoader(new URLClassLoader(new URL[] {root})));
 			assertExactFilenames("classpath*:scanned/*.txt", "resource#test1.txt", "resource#test2.txt");
 		}
@@ -369,7 +371,7 @@ class PathMatchingResourcePatternResolverTests {
 			String resourcePath = ClassUtils.convertClassNameToResourcePath(sourceClass.getName())
 					+ ClassUtils.CLASS_FILE_SUFFIX;
 			URL resource = getClass().getClassLoader().getResource(resourcePath);
-			URL url = new URL(resource.toString().replace(resourcePath, ""));
+			URL url = Urls.create(resource.toString().replace(resourcePath, ""), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 			URLConnection connection = url.openConnection();
 			if (connection instanceof JarURLConnection jarUrlConnection) {
 				try (JarFile jarFile = jarUrlConnection.getJarFile()) {

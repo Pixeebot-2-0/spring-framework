@@ -16,6 +16,8 @@
 
 package org.springframework.util;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.JarURLConnection;
@@ -415,7 +417,7 @@ public abstract class ResourceUtils {
 		catch (URISyntaxException | IllegalArgumentException ex) {
 			// Lenient fallback to deprecated URL constructor,
 			// e.g. for decoded location Strings with percent characters.
-			return new URL(location);
+			return Urls.create(location, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 		}
 	}
 
@@ -436,7 +438,7 @@ public abstract class ResourceUtils {
 		relativePath = StringUtils.replace(relativePath, "#", "%23");
 
 		// Retain original URL instance, potentially including custom URLStreamHandler.
-		return new URL(root, StringUtils.cleanPath(StringUtils.applyRelativePath(root.toString(), relativePath)));
+		return Urls.create(root, StringUtils.cleanPath(StringUtils.applyRelativePath(root.toString(), relativePath)), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 	}
 
 	/**

@@ -16,6 +16,8 @@
 
 package org.springframework.test.web.servlet.htmlunit;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -32,11 +34,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 abstract class AbstractWebRequestMatcherTests {
 
 	protected void assertMatches(WebRequestMatcher matcher, String url) throws MalformedURLException {
-		assertThat(matcher.matches(new WebRequest(new URL(url)))).isTrue();
+		assertThat(matcher.matches(new WebRequest(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)))).isTrue();
 	}
 
 	protected void assertDoesNotMatch(WebRequestMatcher matcher, String url) throws MalformedURLException {
-		assertThat(matcher.matches(new WebRequest(new URL(url)))).isFalse();
+		assertThat(matcher.matches(new WebRequest(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)))).isFalse();
 	}
 
 }
