@@ -16,6 +16,7 @@
 
 package org.springframework.web.context.support;
 
+import io.github.pixee.security.Newlines;
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
@@ -69,7 +70,7 @@ public class HttpRequestHandlerServlet extends HttpServlet {
 		catch (HttpRequestMethodNotSupportedException ex) {
 			String[] supportedMethods = ex.getSupportedMethods();
 			if (supportedMethods != null) {
-				response.setHeader(HttpHeaders.ALLOW, StringUtils.arrayToDelimitedString(supportedMethods, ", "));
+				response.setHeader(HttpHeaders.ALLOW, Newlines.stripAll(StringUtils.arrayToDelimitedString(supportedMethods, ", ")));
 			}
 			response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, ex.getMessage());
 		}

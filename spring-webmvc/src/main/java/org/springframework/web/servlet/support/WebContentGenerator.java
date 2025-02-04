@@ -16,6 +16,7 @@
 
 package org.springframework.web.servlet.support;
 
+import io.github.pixee.security.Newlines;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -315,7 +316,7 @@ public abstract class WebContentGenerator extends WebApplicationObjectSupport {
 		String ccValue = cacheControl.getHeaderValue();
 		if (ccValue != null) {
 			// Set computed HTTP 1.1 Cache-Control header
-			response.setHeader(HEADER_CACHE_CONTROL, ccValue);
+			response.setHeader(HEADER_CACHE_CONTROL, Newlines.stripAll(ccValue));
 		}
 	}
 
