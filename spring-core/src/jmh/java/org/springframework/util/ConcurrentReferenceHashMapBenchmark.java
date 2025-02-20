@@ -18,6 +18,7 @@ package org.springframework.util;
 
 
 import java.lang.ref.WeakReference;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +71,7 @@ public class ConcurrentReferenceHashMapBenchmark {
 		public void setup() {
 			this.elements = new ArrayList<>(this.capacity);
 			this.map = new ConcurrentReferenceHashMap<>();
-			Random random = new Random();
+			Random random = new SecureRandom();
 			random.ints(this.capacity).forEach(value -> {
 				String element = String.valueOf(value);
 				this.elements.add(element);
@@ -105,7 +106,7 @@ public class ConcurrentReferenceHashMapBenchmark {
 		public void setup() {
 			this.elements = new ArrayList<>(this.capacity);
 			this.map = Collections.synchronizedMap(new WeakHashMap<>());
-			Random random = new Random();
+			Random random = new SecureRandom();
 			random.ints(this.capacity).forEach(value -> {
 				String element = String.valueOf(value);
 				this.elements.add(element);

@@ -16,6 +16,7 @@
 
 package org.springframework.util;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,7 +62,7 @@ public class StringUtilsBenchmark {
 
 		@Setup(Level.Iteration)
 		public void setup() {
-			Random random = new Random();
+			Random random = new SecureRandom();
 			this.elements = new ArrayList<>(this.elementCount);
 			int bound = this.elementMaxSize - this.elementMinSize;
 			for (int i = 0; i < this.elementCount; i++) {
@@ -93,7 +94,7 @@ public class StringUtilsBenchmark {
 		@Setup(Level.Iteration)
 		public void setup() {
 			this.paths = new ArrayList<>(this.pathsCount);
-			Random random = new Random();
+			Random random = new SecureRandom();
 			for (int i = 0; i < this.pathsCount; i++) {
 				this.paths.add(createSamplePath(random));
 			}
