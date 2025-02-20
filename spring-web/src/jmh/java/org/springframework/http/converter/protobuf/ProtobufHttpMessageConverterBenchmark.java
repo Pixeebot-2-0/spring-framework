@@ -18,6 +18,7 @@ package org.springframework.http.converter.protobuf;
 
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -70,7 +71,7 @@ public class ProtobufHttpMessageConverterBenchmark {
 
 		@Setup(Level.Trial)
 		public void createMessages() {
-			Random random = new Random();
+			Random random = new SecureRandom();
 			this.messages = Stream.generate(() -> createMessage(random.nextInt())).limit(this.messageCount).toList();
 		}
 
@@ -104,7 +105,7 @@ public class ProtobufHttpMessageConverterBenchmark {
 
 		@Setup(Level.Trial)
 		public void createMessages() {
-			Random random = new Random();
+			Random random = new SecureRandom();
 			this.messages = Stream.generate(() -> createMessage(random.nextInt())).limit(this.messageCount).toList();
 		}
 
