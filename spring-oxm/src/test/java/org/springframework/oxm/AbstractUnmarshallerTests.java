@@ -16,6 +16,7 @@
 
 package org.springframework.oxm;
 
+import static io.github.pixee.security.XMLInputFactorySecurity.hardenFactory;
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -114,7 +115,7 @@ public abstract class AbstractUnmarshallerTests<U extends Unmarshaller> {
 
 	@Test
 	void unmarshalStaxSourceXmlStreamReader() throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inputFactory = hardenFactory(XMLInputFactory.newInstance());
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(INPUT_STRING));
 		Source source = StaxUtils.createStaxSource(streamReader);
 		Object flights = unmarshaller.unmarshal(source);
@@ -123,7 +124,7 @@ public abstract class AbstractUnmarshallerTests<U extends Unmarshaller> {
 
 	@Test
 	void unmarshalStaxSourceXmlEventReader() throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inputFactory = hardenFactory(XMLInputFactory.newInstance());
 		XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(INPUT_STRING));
 		Source source = StaxUtils.createStaxSource(eventReader);
 		Object flights = unmarshaller.unmarshal(source);
@@ -132,7 +133,7 @@ public abstract class AbstractUnmarshallerTests<U extends Unmarshaller> {
 
 	@Test
 	void unmarshalJaxp14StaxSourceXmlStreamReader() throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inputFactory = hardenFactory(XMLInputFactory.newInstance());
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(INPUT_STRING));
 		StAXSource source = new StAXSource(streamReader);
 		Object flights = unmarshaller.unmarshal(source);
@@ -141,7 +142,7 @@ public abstract class AbstractUnmarshallerTests<U extends Unmarshaller> {
 
 	@Test
 	void unmarshalJaxp14StaxSourceXmlEventReader() throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inputFactory = hardenFactory(XMLInputFactory.newInstance());
 		XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(INPUT_STRING));
 		StAXSource source = new StAXSource(eventReader);
 		Object flights = unmarshaller.unmarshal(source);
@@ -150,7 +151,7 @@ public abstract class AbstractUnmarshallerTests<U extends Unmarshaller> {
 
 	@Test
 	protected void unmarshalPartialStaxSourceXmlStreamReader() throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inputFactory = hardenFactory(XMLInputFactory.newInstance());
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(INPUT_STRING));
 		streamReader.nextTag(); // skip to flights
 		assertThat(streamReader.getName()).as("Invalid element").isEqualTo(new QName("http://samples.springframework.org/flight", "flights"));

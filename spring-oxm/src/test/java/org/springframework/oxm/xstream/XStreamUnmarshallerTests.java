@@ -16,6 +16,7 @@
 
 package org.springframework.oxm.xstream;
 
+import static io.github.pixee.security.XMLInputFactorySecurity.hardenFactory;
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -72,7 +73,7 @@ class XStreamUnmarshallerTests {
 
 	@Test
 	void unmarshalStaxSourceXmlStreamReader() throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inputFactory = hardenFactory(XMLInputFactory.newInstance());
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(INPUT_STRING));
 		Source source = StaxUtils.createStaxSource(streamReader);
 		Object flights = unmarshaller.unmarshal(source);

@@ -16,6 +16,7 @@
 
 package org.springframework.oxm.jaxb;
 
+import static io.github.pixee.security.XMLInputFactorySecurity.hardenFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -113,7 +114,7 @@ class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marshaller> 
 	@Override
 	@SuppressWarnings("unchecked")
 	public void unmarshalPartialStaxSourceXmlStreamReader() throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inputFactory = hardenFactory(XMLInputFactory.newInstance());
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(INPUT_STRING));
 		streamReader.nextTag(); // skip to flights
 		streamReader.nextTag(); // skip to flight
