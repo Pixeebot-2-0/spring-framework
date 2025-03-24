@@ -16,6 +16,7 @@
 
 package org.springframework.context.testfixture;
 
+import static io.github.pixee.security.ObjectInputFilters.createSafeObjectInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -163,7 +164,7 @@ public abstract class AbstractApplicationContextTests extends AbstractListableBe
 		ObjectOutputStream oos = new ObjectOutputStream(bos);
 		oos.writeObject(event);
 		oos.close();
-		event = (MyEvent) new ObjectInputStream(new ByteArrayInputStream(
+		event = (MyEvent) createSafeObjectInputStream(new ByteArrayInputStream(
 				bos.toByteArray())).readObject();
 		doTestEvents(this.listener, this.parentListener, event);
 	}
