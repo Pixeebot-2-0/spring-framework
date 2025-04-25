@@ -16,6 +16,8 @@
 
 package org.springframework.core.test.tools;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,8 +147,7 @@ public class DynamicClassLoader extends ClassLoader {
 	@SuppressWarnings("deprecation")  // on JDK 20
 	private URL createResourceUrl(String name, Supplier<byte[]> bytesSupplier) {
 		try {
-			return new URL(null, "resource:///" + name,
-					new ResourceFileHandler(bytesSupplier));
+			return Urls.create(null, "resource:///" + name, new ResourceFileHandler(bytesSupplier), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 		}
 		catch (MalformedURLException ex) {
 			throw new IllegalStateException(ex);

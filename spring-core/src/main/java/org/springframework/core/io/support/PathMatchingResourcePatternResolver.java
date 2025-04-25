@@ -16,6 +16,8 @@
 
 package org.springframework.core.io.support;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -457,7 +459,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 				// Prefer cleaned URL, aligned with UrlResource#createRelative(String)
 				try {
 					// Retain original URL instance, potentially including custom URLStreamHandler.
-					return new UrlResource(new URL(url, cleanedPath));
+					return new UrlResource(Urls.create(url, cleanedPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
 				}
 				catch (MalformedURLException ex) {
 					// Fallback to regular URL construction below...
@@ -586,7 +588,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 				StringTokenizer tokenizer = new StringTokenizer(classPath);
 				while (tokenizer.hasMoreTokens()) {
 					String path = tokenizer.nextToken();
-					if (path.indexOf(':') >= 0 && !"file".equalsIgnoreCase(new URL(base, path).getProtocol())) {
+					if (path.indexOf(':') >= 0 && !"file".equalsIgnoreCase(Urls.create(base, path, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getProtocol())) {
 						// See jdk.internal.loader.URLClassPath.JarLoader.tryResolveFile(URL, String)
 						continue;
 					}

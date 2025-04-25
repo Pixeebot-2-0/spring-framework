@@ -16,6 +16,8 @@
 
 package org.springframework.util;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -987,7 +989,7 @@ class ObjectUtilsTests {
 			assertThat(ObjectUtils.nullSafeConciseToString(new URL(url))).isEqualTo(url);
 
 			url += "&qux=" + "4".repeat(60);
-			assertThat(ObjectUtils.nullSafeConciseToString(new URL(url)))
+			assertThat(ObjectUtils.nullSafeConciseToString(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)))
 					.hasSize(truncatedLength)
 					.startsWith(url.subSequence(0, 100))
 					.endsWith(truncated);

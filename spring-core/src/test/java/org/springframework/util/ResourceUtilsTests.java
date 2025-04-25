@@ -16,6 +16,8 @@
 
 package org.springframework.util;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
@@ -32,9 +34,9 @@ class ResourceUtilsTests {
 	@Test
 	void isJarURL() throws Exception {
 		assertThat(ResourceUtils.isJarURL(new URL("jar:file:myjar.jar!/mypath"))).isTrue();
-		assertThat(ResourceUtils.isJarURL(new URL(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
-		assertThat(ResourceUtils.isJarURL(new URL(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
-		assertThat(ResourceUtils.isJarURL(new URL(null, "jar:war:file:mywar.war*/myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
+		assertThat(ResourceUtils.isJarURL(Urls.create(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isTrue();
+		assertThat(ResourceUtils.isJarURL(Urls.create(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isTrue();
+		assertThat(ResourceUtils.isJarURL(Urls.create(null, "jar:war:file:mywar.war*/myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isTrue();
 		assertThat(ResourceUtils.isJarURL(new URL("file:myjar.jar"))).isFalse();
 		assertThat(ResourceUtils.isJarURL(new URL("http:myserver/myjar.jar"))).isFalse();
 	}
@@ -42,29 +44,29 @@ class ResourceUtilsTests {
 	@Test
 	void extractJarFileURL() throws Exception {
 		assertThat(ResourceUtils.extractJarFileURL(new URL("jar:file:myjar.jar!/mypath"))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractJarFileURL(new URL(null, "jar:myjar.jar!/mypath", new DummyURLStreamHandler()))).isEqualTo(new URL("file:/myjar.jar"));
-		assertThat(ResourceUtils.extractJarFileURL(new URL(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractJarFileURL(new URL(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isEqualTo(new URL("file:myjar.jar"));
+		assertThat(ResourceUtils.extractJarFileURL(Urls.create(null, "jar:myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:/myjar.jar"));
+		assertThat(ResourceUtils.extractJarFileURL(Urls.create(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:myjar.jar"));
+		assertThat(ResourceUtils.extractJarFileURL(Urls.create(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:myjar.jar"));
 
 		assertThat(ResourceUtils.extractJarFileURL(new URL("file:myjar.jar"))).isEqualTo(new URL("file:myjar.jar"));
 		assertThat(ResourceUtils.extractJarFileURL(new URL("jar:file:myjar.jar!/"))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractJarFileURL(new URL(null, "zip:file:myjar.jar!/", new DummyURLStreamHandler()))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractJarFileURL(new URL(null, "wsjar:file:myjar.jar!/", new DummyURLStreamHandler()))).isEqualTo(new URL("file:myjar.jar"));
+		assertThat(ResourceUtils.extractJarFileURL(Urls.create(null, "zip:file:myjar.jar!/", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:myjar.jar"));
+		assertThat(ResourceUtils.extractJarFileURL(Urls.create(null, "wsjar:file:myjar.jar!/", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:myjar.jar"));
 	}
 
 	@Test
 	void extractArchiveURL() throws Exception {
 		assertThat(ResourceUtils.extractArchiveURL(new URL("jar:file:myjar.jar!/mypath"))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractArchiveURL(new URL(null, "jar:myjar.jar!/mypath", new DummyURLStreamHandler()))).isEqualTo(new URL("file:/myjar.jar"));
-		assertThat(ResourceUtils.extractArchiveURL(new URL(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractArchiveURL(new URL(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractArchiveURL(new URL(null, "jar:war:file:mywar.war*/myjar.jar!/mypath", new DummyURLStreamHandler()))).isEqualTo(new URL("file:mywar.war"));
+		assertThat(ResourceUtils.extractArchiveURL(Urls.create(null, "jar:myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:/myjar.jar"));
+		assertThat(ResourceUtils.extractArchiveURL(Urls.create(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:myjar.jar"));
+		assertThat(ResourceUtils.extractArchiveURL(Urls.create(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:myjar.jar"));
+		assertThat(ResourceUtils.extractArchiveURL(Urls.create(null, "jar:war:file:mywar.war*/myjar.jar!/mypath", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:mywar.war"));
 
 		assertThat(ResourceUtils.extractArchiveURL(new URL("file:myjar.jar"))).isEqualTo(new URL("file:myjar.jar"));
 		assertThat(ResourceUtils.extractArchiveURL(new URL("jar:file:myjar.jar!/"))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractArchiveURL(new URL(null, "zip:file:myjar.jar!/", new DummyURLStreamHandler()))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractArchiveURL(new URL(null, "wsjar:file:myjar.jar!/", new DummyURLStreamHandler()))).isEqualTo(new URL("file:myjar.jar"));
-		assertThat(ResourceUtils.extractArchiveURL(new URL(null, "jar:war:file:mywar.war*/myjar.jar!/", new DummyURLStreamHandler()))).isEqualTo(new URL("file:mywar.war"));
+		assertThat(ResourceUtils.extractArchiveURL(Urls.create(null, "zip:file:myjar.jar!/", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:myjar.jar"));
+		assertThat(ResourceUtils.extractArchiveURL(Urls.create(null, "wsjar:file:myjar.jar!/", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:myjar.jar"));
+		assertThat(ResourceUtils.extractArchiveURL(Urls.create(null, "jar:war:file:mywar.war*/myjar.jar!/", new DummyURLStreamHandler(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS))).isEqualTo(new URL("file:mywar.war"));
 	}
 
 
