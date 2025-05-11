@@ -16,6 +16,7 @@
 
 package org.springframework.web.filter;
 
+import io.github.pixee.security.Newlines;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -319,7 +320,7 @@ public final class UrlHandlerFilter extends OncePerRequestFilter {
 
 			response.resetBuffer();
 			response.setStatus(this.httpStatus.value());
-			response.setHeader(HttpHeaders.LOCATION, trimTrailingSlash(request.getRequestURI()));
+			response.setHeader(HttpHeaders.LOCATION, Newlines.stripAll(trimTrailingSlash(request.getRequestURI())));
 			response.flushBuffer();
 		}
 	}

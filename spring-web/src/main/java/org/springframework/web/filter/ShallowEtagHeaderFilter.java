@@ -16,6 +16,7 @@
 
 package org.springframework.web.filter;
 
+import io.github.pixee.security.Newlines;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -121,7 +122,7 @@ public class ShallowEtagHeaderFilter extends OncePerRequestFilter {
 			String eTag = wrapper.getHeader(HttpHeaders.ETAG);
 			if (!StringUtils.hasText(eTag)) {
 				eTag = generateETagHeaderValue(wrapper.getContentInputStream(), this.writeWeakETag);
-				rawResponse.setHeader(HttpHeaders.ETAG, eTag);
+				rawResponse.setHeader(HttpHeaders.ETAG, Newlines.stripAll(eTag));
 			}
 			if (new ServletWebRequest(request, rawResponse).checkNotModified(eTag)) {
 				return;

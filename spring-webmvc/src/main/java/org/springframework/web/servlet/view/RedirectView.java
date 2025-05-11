@@ -16,6 +16,7 @@
 
 package org.springframework.web.servlet.view;
 
+import io.github.pixee.security.Newlines;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
@@ -616,11 +617,11 @@ public class RedirectView extends AbstractUrlBasedView implements SmartView {
 			HttpStatusCode attributeStatusCode = (HttpStatusCode) request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE);
 			if (this.statusCode != null) {
 				response.setStatus(this.statusCode.value());
-				response.setHeader("Location", encodedURL);
+				response.setHeader("Location", Newlines.stripAll(encodedURL));
 			}
 			else if (attributeStatusCode != null) {
 				response.setStatus(attributeStatusCode.value());
-				response.setHeader("Location", encodedURL);
+				response.setHeader("Location", Newlines.stripAll(encodedURL));
 			}
 			else {
 				// Send status code 302 by default.
@@ -630,7 +631,7 @@ public class RedirectView extends AbstractUrlBasedView implements SmartView {
 		else {
 			HttpStatusCode statusCode = getHttp11StatusCode(request, response, targetUrl);
 			response.setStatus(statusCode.value());
-			response.setHeader("Location", encodedURL);
+			response.setHeader("Location", Newlines.stripAll(encodedURL));
 		}
 	}
 
