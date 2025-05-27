@@ -16,6 +16,7 @@
 
 package org.springframework.format.datetime.standard;
 
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -88,7 +89,7 @@ class InstantFormatterTests {
 
 		private static final long DATA_SET_SIZE = 10;
 
-		private static final Random random = new Random();
+		private static final Random random = new SecureRandom();
 
 		@Override
 		public final Stream<Arguments> provideArguments(ExtensionContext context) {
@@ -134,7 +135,7 @@ class InstantFormatterTests {
 
 		private static final long DATA_SET_SIZE = 10;
 
-		private static final Random random = new Random();
+		private static final Random random = new SecureRandom();
 
 		@Override
 		public Stream<Arguments> provideArguments(ExtensionContext context) {

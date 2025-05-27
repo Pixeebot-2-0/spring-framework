@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +71,7 @@ public abstract class AbstractTyrusRequestUpgradeStrategy extends AbstractStanda
 			StringUtils.tokenizeToStringArray(Version.getSupportedWireProtocolVersions(), ",");
 
 
-	private static final Random random = new Random();
+	private static final Random random = new SecureRandom();
 
 	private static final Constructor<?> constructor;
 

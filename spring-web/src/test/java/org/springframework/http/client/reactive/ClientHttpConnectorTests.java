@@ -23,6 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -200,7 +201,7 @@ class ClientHttpConnectorTests {
 
 	private Buffer randomBody(int size) {
 		Buffer responseBody = new Buffer();
-		Random rnd = new Random();
+		Random rnd = new SecureRandom();
 		for (int i = 0; i < size; i++) {
 			byte[] bytes = new byte[BUF_SIZE];
 			rnd.nextBytes(bytes);

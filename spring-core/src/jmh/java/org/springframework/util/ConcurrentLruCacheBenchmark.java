@@ -16,6 +16,7 @@
 
 package org.springframework.util;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -66,7 +67,7 @@ public class ConcurrentLruCacheBenchmark {
 			this.generator = key -> key + "value";
 			this.lruCache = new ConcurrentLruCache<>(this.capacity, this.generator);
 			Assert.isTrue(this.cacheMissRate < 1, "cache miss rate should be < 1");
-			Random random = new Random();
+			Random random = new SecureRandom();
 			int elementsCount = Math.round(this.capacity * (1 + this.cacheMissRate));
 			this.elements = new ArrayList<>(elementsCount);
 			random.ints(elementsCount).forEach(value -> this.elements.add(String.valueOf(value)));
