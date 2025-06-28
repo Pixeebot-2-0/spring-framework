@@ -16,6 +16,7 @@
 
 package org.springframework.core;
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -1451,6 +1452,7 @@ class ResolvableTypeTests {
 		oos.writeObject(type);
 		oos.close();
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+		ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
 		ResolvableType read = (ResolvableType) ois.readObject();
 		assertThat(read).isEqualTo(type);
 		assertThat(read.getType()).isEqualTo(type.getType());

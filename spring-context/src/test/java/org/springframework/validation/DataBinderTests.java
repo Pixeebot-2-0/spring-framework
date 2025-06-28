@@ -16,6 +16,7 @@
 
 package org.springframework.validation;
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.io.ByteArrayInputStream;
@@ -1910,6 +1911,7 @@ class DataBinderTests {
 		oos.writeObject(ex);
 		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
 		ObjectInputStream ois = new ObjectInputStream(bais);
+		ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
 
 		BindException ex2 = (BindException) ois.readObject();
 		assertThat(ex2.hasGlobalErrors()).isTrue();
