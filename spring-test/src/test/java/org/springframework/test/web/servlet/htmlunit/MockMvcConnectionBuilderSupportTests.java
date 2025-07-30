@@ -16,6 +16,8 @@
 
 package org.springframework.test.web.servlet.htmlunit;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 
@@ -134,7 +136,7 @@ public class MockMvcConnectionBuilderSupportTests {
 	}
 
 	private WebResponse getResponse(WebConnection connection, String url) throws IOException {
-		return connection.getResponse(new WebRequest(new URL(url)));
+		return connection.getResponse(new WebRequest(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)));
 	}
 
 
